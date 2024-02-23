@@ -76,8 +76,8 @@ app.get('/api/code', async (req, res) => {
     console.log('mongoDBKey', mongoDBKey);
     try {
         const db = client.db('codeDB')
-        const coll = db.collection('code')
         console.log("bbbbbbbbbbbbbbbbbb");
+        const coll = db.collection('code')
         const cursor = await coll.find()
         console.log("ccccccccccccccccccc");
         const codes = await cursor.toArray()
