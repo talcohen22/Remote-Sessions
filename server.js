@@ -8,7 +8,7 @@ import http from 'http'
 import path from 'path'
 // import { mongoDBKey as localMongoDBKey} from './keys.js'
 
-const mongoDBKey = { mongoURI: process.env.mongoURI, secretOrKey: "secret", }
+const mongoDBKey = { mongoURI: process.env.mongoURI, secretOrKey: "secret" }
 console.log("aaaaaaaaaaaaaaaaaaaaaaa");
 console.log('mongoDBKey', mongoDBKey);
 
