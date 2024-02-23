@@ -6,8 +6,9 @@ import cors from 'cors'
 import { Server } from 'socket.io'
 import http from 'http'
 import path from 'path'
-import { mongoDBKey } from './keys.js'
+// import { mongoDBKey } from './keys.js'
 
+const mongoDBKey = {mongoURI: process.env.mongoURI, secretOrKey: "secret",}
 
 const { ObjectId } = mongodb
 
