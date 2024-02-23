@@ -9,8 +9,6 @@ import path from 'path'
 // import { mongoDBKey as localMongoDBKey} from './keys.js'
 
 const mongoDBKey = { mongoURI: process.env.mongoURI, secretOrKey: "secret" }
-console.log("aaaaaaaaaaaaaaaaaaaaaaa");
-console.log('mongoDBKey', mongoDBKey);
 
 const { ObjectId } = mongodb
 
@@ -74,10 +72,14 @@ app.use(express.static(path.resolve('public')));
 
 // Get codes (READ)
 app.get('/api/code', async (req, res) => {
+    console.log("aaaaaaaaaaaaaaaaaaaaaaa");
+    console.log('mongoDBKey', mongoDBKey);
     try {
         const db = client.db('codeDB')
         const coll = db.collection('code')
+        console.log("bbbbbbbbbbbbbbbbbb");
         const cursor = await coll.find()
+        console.log("ccccccccccccccccccc");
         const codes = await cursor.toArray()
         res.json(codes)
     } catch (error) {
