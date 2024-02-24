@@ -37,7 +37,9 @@ if (process.env.NODE_ENV === 'production') {
 //connection to mongoDB
 // const uri = "mongodb://0.0.0.0:27017/" //for local usage;
 
-const client = new MongoClient('mongodb+srv://talco4088:4EoauX9sWrbDzaNa@cluster0.rcux9jf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0') //for global usage
+// const client = new MongoClient('mongodb+srv://talco4088:4EoauX9sWrbDzaNa@cluster0.rcux9jf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0') //for global usage
+const client = await MongoClient.connect('mongodb+srv://talco4088:4EoauX9sWrbDzaNa@cluster0.rcux9jf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true })
+
 // const client = new MongoClient(mongoDBKey.mongoURI) //for global usage
 
 // const client = new MongoClient(mongoDBKey.mongoURI) //for local usage
