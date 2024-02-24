@@ -82,7 +82,7 @@ app.get('/api/code', async (req, res) => {
     // console.log('mongoDBKey', mongoDBKey);
     try {
         console.log("AAAAAAAAAAAAAAA");
-        console.log('(mongoDBKey.mongoURI', mongoDBKey.mongoURI);
+        // console.log('(mongoDBKey.mongoURI', mongoDBKey.mongoURI);
         // console.log('client', client);
         const db = client.db('codeDB')
         console.log("bbbbbbbbbbbbbbbbbb");
