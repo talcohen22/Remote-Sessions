@@ -6,7 +6,7 @@ import cors from 'cors'
 import { Server } from 'socket.io'
 import http from 'http'
 import path from 'path'
-// import { mongoDBKey as localMongoDBKey} from './keys.js'
+// import { mongoDBKey } from './keys.js'
 
 const mongoDBKey = { mongoURI: process.env.mongoURI, secretOrKey: "secret" }
 
@@ -73,7 +73,7 @@ app.use(express.static(path.resolve('public')));
 // Get codes (READ)
 app.get('/api/code', async (req, res) => {
     console.log("aaaaaaaaaaaaaaaaaaaaaaa");
-    console.log('mongoDBKey', mongoDBKey);
+    // console.log('mongoDBKey', mongoDBKey);
     try {
         console.log("AAAAAAAAAAAAAAA");
         console.log('client', client);
@@ -124,6 +124,7 @@ app.put('/api/code/:id', async (req, res) => {
 
 
 const server = http.createServer(app)
+server.keepAliveTimeout = 120000
 const io = new Server(server, {
     cors: {
         origin: '*',
