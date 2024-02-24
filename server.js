@@ -6,9 +6,9 @@ import cors from 'cors'
 import { Server } from 'socket.io'
 import http from 'http'
 import path from 'path'
-import { mongoDBKey } from './keys.js'
+// import { mongoDBKey } from './keys.js'
 
-// const mongoDBKey = { mongoURI: process.env.mongoURI, secretOrKey: "secret" }
+const mongoDBKey = { mongoURI: process.env.mongoURI, secretOrKey: "secret" }
 
 const { ObjectId } = mongodb
 
@@ -83,6 +83,8 @@ app.get('/api/code', async (req, res) => {
         const cursor = await coll.find()
         console.log("ccccccccccccccccccc");
         const codes = await cursor.toArray()
+        console.log("ddddddddddddddd");
+        console.log('codes:', codes)
         res.json(codes)
     } catch (error) {
         console.error('Failed to get codes', error)
