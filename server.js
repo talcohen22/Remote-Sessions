@@ -36,6 +36,8 @@ if (process.env.NODE_ENV === 'production') {
 
 //connection to mongoDB
 // const uri = "mongodb://0.0.0.0:27017/" //for local usage
+console.log('MMMMMMMMMMMMMMMMMMMMMMMMMM');
+console.log('process.env.mongoURI0', process.env.mongoURI);
 const client = new MongoClient(process.env.mongoURI) //for global usage
 // const client = new MongoClient(mongoDBKey.mongoURI) //for local usage
 // const client = new MongoClient(uri)
