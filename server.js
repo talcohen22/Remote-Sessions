@@ -35,10 +35,9 @@ if (process.env.NODE_ENV === 'production') {
 
 
 //connection to mongoDB
-// const uri = "mongodb://0.0.0.0:27017/" //for local usage;
+const client = new MongoClient(mongoDBKey.mongoURI) //for global usage
+// const uri = "mongodb://0.0.0.0:27017/" //for local usage
 // const client = new MongoClient(uri)
-
-const client = new MongoClient(mongoDBKey.mongoURI)
 
 async function run() {
     try {
@@ -74,17 +73,10 @@ app.use(express.static(path.resolve('public')));
 // Get codes (READ)
 app.get('/api/code', async (req, res) => {
     try {
-        console.log("AAAAAAAAAAAAAAA");
-        console.log('(mongoDBKey.mongoURI', mongoDBKey.mongoURI);
-        // console.log('client', client);
         const db = client.db('codeDB')
-        console.log("bbbbbbbbbbbbbbbbbb");
         const coll = db.collection('code')
         const cursor = await coll.find()
-        console.log("ccccccccccccccccccc");
         const codes = await cursor.toArray()
-        console.log("ddddddddddddddd");
-        console.log('codes:', codes)
         res.json(codes)
     } catch (error) {
         console.error('Failed to get codes', error)
