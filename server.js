@@ -6,9 +6,9 @@ import cors from 'cors'
 import { Server } from 'socket.io'
 import http from 'http'
 import path from 'path'
-// import { mongoDBKey } from './keys.js'
+import { mongoDBKey } from './keys.js'
 
-const mongoDBKey = { mongoURI: process.env.mongoURI, secretOrKey: "secret" }
+// const mongoDBKey = { mongoURI: process.env.mongoURI, secretOrKey: "secret" }
 
 const { ObjectId } = mongodb
 
@@ -124,7 +124,7 @@ app.put('/api/code/:id', async (req, res) => {
 
 
 const server = http.createServer(app)
-server.keepAliveTimeout = 120000
+// server.keepAliveTimeout = 120000
 const io = new Server(server, {
     cors: {
         origin: '*',
