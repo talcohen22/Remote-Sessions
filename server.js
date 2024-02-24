@@ -46,7 +46,7 @@ const client = new MongoClient('mongodb+srv://talco4088:4EoauX9sWrbDzaNa@cluster
 async function run() {
     try {
         console.log("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
-        console.log('client:', client)
+        // console.log('client:', client)
         await client.connect()
         console.log('Successfully connected to the database')
     } catch (error) {
