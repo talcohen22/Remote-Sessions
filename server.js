@@ -8,7 +8,7 @@ import http from 'http'
 import path from 'path'
 // import { mongoDBKey } from './keys.js'
 
-// const mongoDBKey = { mongoURI: process.env.mongoURI, secretOrKey: "secret" }
+const mongoDBKey = { mongoURI: process.env.mongoURI, secretOrKey: "secret" }
 
 const { ObjectId } = mongodb
 
@@ -36,19 +36,12 @@ if (process.env.NODE_ENV === 'production') {
 
 //connection to mongoDB
 // const uri = "mongodb://0.0.0.0:27017/" //for local usage;
-
-// const client = new MongoClient('mongodb+srv://talco4088:4EoauX9sWrbDzaNa@cluster0.rcux9jf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0') //for global usage
-const client = await MongoClient.connect('mongodb+srv://talco4088:4EoauX9sWrbDzaNa@cluster0.rcux9jf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true })
-
-// const client = new MongoClient(mongoDBKey.mongoURI) //for global usage
-
-// const client = new MongoClient(mongoDBKey.mongoURI) //for local usage
 // const client = new MongoClient(uri)
+
+const client = new MongoClient(mongoDBKey.mongoURI)
 
 async function run() {
     try {
-        console.log("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
-        // console.log('client:', client)
         await client.connect()
         console.log('Successfully connected to the database')
     } catch (error) {
@@ -80,11 +73,9 @@ app.use(express.static(path.resolve('public')));
 
 // Get codes (READ)
 app.get('/api/code', async (req, res) => {
-    console.log("aaaaaaaaaaaaaaaaaaaaaaa");
-    // console.log('mongoDBKey', mongoDBKey);
     try {
         console.log("AAAAAAAAAAAAAAA");
-        // console.log('(mongoDBKey.mongoURI', mongoDBKey.mongoURI);
+        console.log('(mongoDBKey.mongoURI', mongoDBKey.mongoURI);
         // console.log('client', client);
         const db = client.db('codeDB')
         console.log("bbbbbbbbbbbbbbbbbb");
@@ -135,7 +126,6 @@ app.put('/api/code/:id', async (req, res) => {
 
 
 const server = http.createServer(app)
-// server.keepAliveTimeout = 120000
 const io = new Server(server, {
     cors: {
         origin: '*'
