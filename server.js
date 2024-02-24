@@ -42,6 +42,8 @@ const client = new MongoClient(mongoDBKey.mongoURI) //for global usage
 
 async function run() {
     try {
+        console.log("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
+        console.log('client:', client)
         await client.connect()
         console.log('Successfully connected to the database')
     } catch (error) {
