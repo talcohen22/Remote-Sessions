@@ -6,14 +6,12 @@ import cors from 'cors'
 import { Server } from 'socket.io'
 import http from 'http'
 import path from 'path'
-// import { mongoDBKey } from './keys.js'
+import { mongoDBKey } from './keys.js'
+// const { ObjectId } = mongodb
 
 const mongoDBKey = { mongoURI: process.env.mongoURI, secretOrKey: "secret" }
 
-const { ObjectId } = mongodb
-
 const app = express()
-
 app.use(cookieParser())
 app.use(express.json())
 app.use(cors())
@@ -35,9 +33,11 @@ if (process.env.NODE_ENV === 'production') {
 
 
 //connection to mongoDB
-const client = new MongoClient(mongoDBKey.mongoURI) //for global usage
 // const uri = "mongodb://0.0.0.0:27017/" //for local usage
 // const client = new MongoClient(uri)
+const client = new MongoClient(mongoDBKey.mongoURI) //for global usage
+const db = client.db('codeDB')
+const coll = db.collection('code')
 
 async function run() {
     try {
@@ -51,30 +51,11 @@ async function run() {
 run()
 
 
-
-
-
-
-// Express Config:
-// app.use(express.static('public'))
-
-// app.get('/', (req, res) => {
-//     res.send('<h1>Hello and welcome to my server!</h1>')
-// })
-
 app.use(express.static(path.resolve('public')));
-
-// app.get('/**', (req, res) => {
-//     console.log("im here");
-//     res.sendFile(path.resolve('public/index.html'))
-// })
-
 
 // Get codes (READ)
 app.get('/api/code', async (req, res) => {
     try {
-        const db = client.db('codeDB')
-        const coll = db.collection('code')
         const cursor = await coll.find()
         const codes = await cursor.toArray()
         res.json(codes)
@@ -88,8 +69,6 @@ app.get('/api/code', async (req, res) => {
 app.get('/api/code/:id', async (req, res) => {
     try {
         const codeId = req.params.id
-        const db = client.db('codeDB')
-        const coll = db.collection('code')
         const code = await coll.findOne({ _id: new ObjectId(codeId) })
         res.json(code)
     } catch (error) {
@@ -102,8 +81,6 @@ app.get('/api/code/:id', async (req, res) => {
 app.put('/api/code/:id', async (req, res) => {
     try {
         const code = req.body
-        const db = client.db('codeDB')
-        const coll = db.collection('code')
         const saveCodeId = code._id
         delete code._id
         await coll.updateOne({ _id: new ObjectId(saveCodeId) }, { $set: code })
@@ -116,14 +93,12 @@ app.put('/api/code/:id', async (req, res) => {
 })
 
 
-
 const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: '*'
+        origin: '*' // the server is configured to accept requests from any origin
     }
 })
-
 
 let firstClientConnected = ''
 
@@ -148,9 +123,7 @@ io.on('connection', (socket) => {
     console.log(`first client connected ${firstClientConnected}`);
 })
 
-
 const port = process.env.PORT || 3030
 server.listen(port, () =>
     console.log(`Server listening on port ${port}`)
 )
-
