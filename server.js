@@ -114,6 +114,7 @@ io.on('connection', (socket) => {
         }
         else room = rooms.push({ codeId, firstClientConnected: socket.id }) //keeping of all occupied code blocks and the first client to enter each
         io.to(codeId).emit('set first client', room.firstClientConnected) //emit to the frontend (all clients in the same code block) who is the first client in the specific code block
+        console.log('rooms:', rooms)
     })
 
     socket.on('code changed', code => { //listening to a 'code changed' event
