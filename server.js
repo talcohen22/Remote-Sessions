@@ -94,34 +94,40 @@ app.put('/api/code/:id', async (req, res) => {
 
 
 const server = http.createServer(app)
+
 const io = new Server(server, {
     cors: {
         origin: '*' // the server is configured to accept requests from any origin
     }
 })
 
-let firstClientConnected = ''
+
+const rooms = []
 
 io.on('connection', (socket) => {
-    console.log(`'user connected' ${socket.id}`);
 
-    if (!firstClientConnected) {
-        firstClientConnected = socket.id
-    }
-    socket.on('client connected', () => {
-        io.emit('set first client', firstClientConnected)
+    socket.on('client connected', (codeId) => {
+        socket.join(codeId); //associating the client with the relevant code block
+        var room = rooms.find(room => room.codeId === codeId) //once a client connected to specific code block, we will save his socketId if he is the first one to enter this page
+        if (room) {
+            if (!room.firstClientConnected) room.firstClientConnected = socket.id
+        }
+        else room = rooms.push({ codeId, firstClientConnected: socket.id }) //keeping of all occupied code blocks and the first client to enter each
+        io.to(codeId).emit('set first client', room.firstClientConnected) //emit to the frontend (all clients in the same code block) who is the first client in the specific code block
     })
 
     socket.on('code changed', code => { //listening to a 'code changed' event
-        io.emit('code updated', code) //emit to the frontend (all other clients) that the event 'code updated' happened
+        io.to(code._id).emit('code updated', code) //emit to the frontend (all other clients in the same code block) that the event 'code updated' happened
     })
 
-    socket.on('disconnect', () => {
-        if (socket.id === firstClientConnected) firstClientConnected = ''
+    socket.on('client leave room', (codeId) => { //When a client leaves the code block - we will check if he is the first client to connect (the teacher), and if so we will update that there is no first client connected
+        const room = rooms.find(room => room.codeId === codeId)
+        if (room && room.firstClientConnected === socket.id) {
+            room.firstClientConnected = ''
+        }
     })
-
-    console.log(`first client connected ${firstClientConnected}`);
 })
+
 
 const port = process.env.PORT || 3030
 server.listen(port, () =>
